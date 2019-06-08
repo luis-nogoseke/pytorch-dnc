@@ -203,6 +203,10 @@ if __name__ == '__main__':
 
     input_data, target_output = generate_data(batch_size, random_length, args.input_size, args.cuda)
 
+
+    print('\n\n\n')
+    print(input_data.shape)
+    print('\n\n\n')
     if rnn.debug:
       output, (chx, mhx, rv), v = rnn(input_data, (None, mhx, None), reset_experience=True, pass_through_memory=True)
     else:
@@ -214,7 +218,7 @@ if __name__ == '__main__':
 
     T.nn.utils.clip_grad_norm(rnn.parameters(), args.clip)
     optimizer.step()
-    loss_value = loss.data[0]
+    loss_value = loss.data.item()
 
     summarize = (epoch % summarize_freq == 0)
     take_checkpoint = (epoch != 0) and (epoch % check_freq == 0)
